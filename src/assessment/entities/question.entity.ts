@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert, JoinTable, ManyToMany, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert, JoinTable, ManyToMany, OneToMany, ManyToOne, BeforeUpdate } from 'typeorm';
+import { AssessmentEntity } from './assessment.entity';
 
 @Entity('questions')
 export class QuestionEntity {
@@ -30,4 +31,12 @@ export class QuestionEntity {
     @Column({ type: 'timestamp', default: () => "CURRENT_TIMESTAMP" })
     updatedAt: Date;
 
+    @BeforeUpdate()
+    updateTimestamp() {
+        this.updatedAt = new Date;
+    }
+
+    @ManyToOne(type => AssessmentEntity, assessment => assessment.questions) 
+    assessment: AssessmentEntity
+    
 }

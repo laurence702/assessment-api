@@ -54,6 +54,6 @@ import {
     @IsArray()
     @IsNotEmpty()
     @ApiPropertyOptional()
-    question: Array<any>;
+    questions: Array<any>;
   }
   

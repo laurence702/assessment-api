@@ -3,6 +3,13 @@ import { AssessmentService } from './assessment.service';
 import { CreateAssessmentDto } from './dto/create-assessment.dto';
 import { UpdateAssessmentDto } from './dto/update-assessment.dto';
 
+import {
+  ApiBearerAuth, ApiTags
+} from '@nestjs/swagger';
+
+@ApiBearerAuth()
+@ApiTags('assessment')
+
 @Controller('assessment')
 export class AssessmentController {
   constructor(private readonly assessmentService: AssessmentService) {}
@@ -11,7 +18,7 @@ export class AssessmentController {
   create(@Body() createAssessmentDto: CreateAssessmentDto) {
     return this.assessmentService.create(createAssessmentDto);
   }
-
+  
   @Get()
   findAll() {
     return this.assessmentService.findAll();
