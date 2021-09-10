@@ -6,7 +6,7 @@
 
 Clone the repository
 
-    git clone https://github.com/laurence702/c-fift.git
+    git clone https://github.com/laurence702/cloudfift-assessment-api.git
 
 Switch to the repo folder
 
