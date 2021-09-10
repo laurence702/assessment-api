@@ -1,10 +1,10 @@
 import { HttpException } from '@nestjs/common/exceptions/http.exception';
 import { InjectRepository } from '@nestjs/typeorm';
 import { validate } from 'class-validator';
-import { AssessmentEntity } from './entities/assessment.entity';
+import { AssessmentEntity } from '../entities/assessment.entity';
 import { Injectable, HttpStatus } from '@nestjs/common';
-import { CreateAssessmentDto } from './dto/create-assessment.dto';
-import { UpdateAssessmentDto } from './dto/update-assessment.dto';
+import { CreateAssessmentDto } from '../dto/create-assessment.dto';
+import { UpdateAssessmentDto } from '../dto/update-assessment.dto';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -14,7 +14,7 @@ export class AssessmentService {
     private readonly assessmentRepository: Repository<AssessmentEntity>,
   ){}
   async create(createAssessmentDto: CreateAssessmentDto): Promise<any> {
-    // create new user
+    // create new assessment
     let newAssessment = new AssessmentEntity();
     newAssessment.name = createAssessmentDto.name;
     newAssessment.assesment_type = createAssessmentDto.assesment_type;
