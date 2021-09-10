@@ -7,30 +7,41 @@ export class QuestionEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
+    @ApiProperty()
     @Column()
     question: string;
 
+    @ApiProperty()
     @Column()
     answer: string;
 
+    @ApiProperty()
     @Column()
     instruction: string;
 
-    @Column()
+    @ApiProperty()
+    @Column({default:'logical'})
     category: string;
 
-    @Column('text')
+    @ApiProperty()
+    @Column('simple-array')
     options: string[];
 
+    @ApiProperty()
     @Column()
     explanations?: string;
 
+    @ApiProperty()
     @Column({ type: 'timestamp', default: () => "CURRENT_TIMESTAMP" })
     createdAt: Date;
 
+    @ApiProperty()
     @Column({ type: 'timestamp', default: () => "CURRENT_TIMESTAMP" })
     updatedAt: Date;
 
+    @Column({nullable: true})
+    assessmentId: number;
+    
     @BeforeUpdate()
     updateTimestamp() {
         this.updatedAt = new Date;

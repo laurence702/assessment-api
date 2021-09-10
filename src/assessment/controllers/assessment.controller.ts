@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { AssessmentService } from './assessment.service';
-import { CreateAssessmentDto } from './dto/create-assessment.dto';
-import { UpdateAssessmentDto } from './dto/update-assessment.dto';
+import { AssessmentService } from '../services/assessment.service';
+import { CreateAssessmentDto } from '../dto/create-assessment.dto';
+import { UpdateAssessmentDto } from '../dto/update-assessment.dto';
 
 import {
   ApiBearerAuth, ApiTags

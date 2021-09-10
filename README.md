@@ -10,7 +10,7 @@ Clone the repository
 
 Switch to the repo folder
 
-    cd c-fift
+    cd cloudfift-assessment-api
     
 Install dependencies
     
@@ -34,7 +34,7 @@ The assessment api codebase contains examples of two different database abstract
 
 ----------
 
-Create a new mysql database with the name `nestjsrealworld`\
+Create a new mysql database with the name `assessmentapi`\
 (or the name you specified in the ormconfig.json)
 
 Copy TypeORM config example file for database settings
@@ -47,7 +47,7 @@ Set mysql database settings in ormconfig.json
       "type": "mysql",
       "host": "localhost",
       "port": 3306,
-      "username": "your-mysql-username",
+      "username": "root",
       "password": "your-mysql-password",
       "database": "assessmentapi",
       "entities": ["src/**/**.entity{.ts,.js}"],
@@ -85,11 +85,6 @@ Now generate the prisma client from the migrated database with the following com
 
     npx prisma generate
 
-The database tables are now set up and the prisma client is generated. For more information see the docs:
-
-- https://www.prisma.io/docs/getting-started/setup-prisma/add-to-existing-project-typescript-mysql
-
-
 ----------
 
 ## NPM scripts
@@ -106,7 +101,7 @@ The database tables are now set up and the prisma client is generated. For more 
 - `npm start`
 - create a user using this json structure
 - 
-- Test api with `http://localhost:3000/api/articles` in your favourite browser
+- Test api with `http://localhost:3000/api/assessment` using postman, insomnia, or whatever api test tool you like
 
 ----------
 
@@ -117,5 +112,5 @@ This applications uses JSON Web Token (JWT) to handle authentication. The token 
 ----------
  
 # Swagger API docs
-
-This example repo uses the NestJS swagger module for API documentation. [NestJS Swagger](https://github.com/nestjs/swagger) - [www.swagger.io](https://swagger.io/)        
+Visit /docs to see swagger documentation
+       
