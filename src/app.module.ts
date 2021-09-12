@@ -12,10 +12,10 @@ const config = require('./config');
 @Module({
   imports: [
     TypeOrmModule.forRoot(config),
-    ArticleModule,
+    //ArticleModule,
     UserModule,
-    ProfileModule,
-    TagModule,
+    //ProfileModule,
+    //TagModule,
     AssessmentModule,
   ],
   controllers: [

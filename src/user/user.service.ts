@@ -19,7 +19,9 @@ export class UserService {
   ) {}
 
   async findAll(): Promise<UserEntity[]> {
-    return await this.userRepository.find();
+    return await this.userRepository.find({ 
+      relations: ['assessments','assessments.questions']
+    });
   }
 
   async findOne({email, password}: LoginUserDto): Promise<UserEntity> {

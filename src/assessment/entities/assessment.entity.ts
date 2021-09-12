@@ -1,5 +1,6 @@
+import { UserEntity } from './../../user/user.entity';
 import { AssessmentType } from '../../common/enum';
-import {Entity, PrimaryGeneratedColumn, Column, BeforeInsert, JoinTable, ManyToMany, OneToMany} from 'typeorm';
+import {Entity, PrimaryGeneratedColumn, Column, BeforeInsert, JoinTable, ManyToMany, OneToMany, ManyToOne} from 'typeorm';
 import { QuestionEntity } from './question.entity';
 
 @Entity('assessments')
@@ -27,6 +28,9 @@ export class AssessmentEntity {
 
     @Column({nullable: true})
     duration: string;
+
+    @ManyToOne(type => UserEntity, user=> user.assessments)
+    owner: UserEntity
 
     @OneToMany(type => QuestionEntity, (question) => question.assessment)
     questions: QuestionEntity[];

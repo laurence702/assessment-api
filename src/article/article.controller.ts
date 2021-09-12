@@ -13,7 +13,6 @@ import {
 } from '@nestjs/swagger';
 
 @ApiBearerAuth()
-@ApiTags('articles')
 @Controller('articles')
 export class ArticleController {
 
