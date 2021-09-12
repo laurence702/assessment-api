@@ -15,7 +15,7 @@ export class AssessmentService {
   ) { }
   async create(createAssessmentDto: CreateAssessmentDto): Promise<any> {
     try {
-      const newAssessment = await this.assessmentRepository.save({ ...createAssessmentDto });
+      const newAssessment = await this.assessmentRepository.save({ ...createAssessmentDto[0] });
       const errors = await validate(newAssessment);
       const res = (errors.length == 0) ? this.buildAssessmentRO(newAssessment):  new HttpException({ message: 'An error occured', errors }, HttpStatus.BAD_REQUEST);
       return res;
@@ -44,17 +44,24 @@ export class AssessmentService {
   }
 
   async findOne(id: number) {
-   return await this.assessmentRepository.findOne(id);
+   return await this.assessmentRepository.findOneOrFail(id);
   }
 
   async update(id: number, updateAssessmentDto: UpdateAssessmentDto) {
+    const ass = await this.assessmentRepository.findOne(id);
     return await this.assessmentRepository.save({
-      id,
+      ...ass,
       ...updateAssessmentDto,
     })
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} assessment`;
+  async remove(id: number): Promise<any> {
+    try {
+      const assessment = await this.assessmentRepository.findOne(id);
+
+      return await this.assessmentRepository.remove(assessment)
+    } catch (error) {
+      throw new HttpException({ message:'an error occurred while removing assessment', error},HttpStatus.BAD_REQUEST)
+    }
   }
 }
