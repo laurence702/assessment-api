@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
     dev:
-        container_name: cloudfif_assessment
+        container_name: cloudfift_assmnt
         image: nestjs-api-dev:1.0.0
         build:
             context: .

@@ -12,30 +12,15 @@ export class AssessmentService {
   constructor(
     @InjectRepository(AssessmentEntity)
     private readonly assessmentRepository: Repository<AssessmentEntity>,
-  ){}
+  ) { }
   async create(createAssessmentDto: CreateAssessmentDto): Promise<any> {
-    // create new assessment
-    let newAssessment = new AssessmentEntity();
-    newAssessment.name = createAssessmentDto.name;
-    newAssessment.assesment_type = createAssessmentDto.assesment_type;
-    newAssessment.duration = createAssessmentDto.duration;
-    newAssessment.instruction = createAssessmentDto.instruction;
-    newAssessment.start_date = createAssessmentDto.start_date;
-    newAssessment.end_date = createAssessmentDto.end_date;
-    newAssessment.questions = createAssessmentDto.questions;
-
-    const errors = await validate(newAssessment);
-    if (errors.length > 0) {
-      const _errors = { username: 'Userinput is not valid.' };
-      throw new HttpException({ message: 'Input data validation failed', _errors }, HttpStatus.BAD_REQUEST);
-
-    } else {
-      try {
-        const savedUser = await this.assessmentRepository.save(newAssessment);
-        return this.buildAssessmentRO(savedUser);
-      } catch (error) {
-        `Assessment  [${createAssessmentDto.name}] cant be created`;
-      }
+    try {
+      const newAssessment = await this.assessmentRepository.save({ ...createAssessmentDto });
+      const errors = await validate(newAssessment);
+      const res = (errors.length == 0) ? this.buildAssessmentRO(newAssessment):  new HttpException({ message: 'An error occured', errors }, HttpStatus.BAD_REQUEST);
+      return res;
+    } catch (errors) {
+      throw new HttpException({ message: 'An error occured', errors }, HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -50,20 +35,23 @@ export class AssessmentService {
       question: assessment.questions,
     };
 
-    return {user: userRO};
+    return { user: userRO };
   }
 
 
   findAll() {
-    return `This action returns all assessment`;
+    return this.assessmentRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} assessment`;
+  async findOne(id: number) {
+   return await this.assessmentRepository.findOne(id);
   }
 
-  update(id: number, updateAssessmentDto: UpdateAssessmentDto) {
-    return `This action updates a #${id} assessment`;
+  async update(id: number, updateAssessmentDto: UpdateAssessmentDto) {
+    return await this.assessmentRepository.save({
+      id,
+      ...updateAssessmentDto,
+    })
   }
 
   remove(id: number) {

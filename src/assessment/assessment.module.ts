@@ -8,8 +8,8 @@ import { AssessmentEntity } from './entities/assessment.entity';
 import { QuestionService } from './services/question.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([AssessmentEntity,QuestionEntity])],
+  imports: [TypeOrmModule.forFeature([AssessmentEntity, QuestionEntity])],
   controllers: [AssessmentController, QuestionController],
   providers: [AssessmentService, QuestionService]
 })
-export class AssessmentModule {}
+export class AssessmentModule { }

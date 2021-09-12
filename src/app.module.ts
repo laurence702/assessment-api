@@ -7,10 +7,11 @@ import { Connection } from 'typeorm';
 import { ProfileModule } from './profile/profile.module';
 import { TagModule } from './tag/tag.module';
 import { AssessmentModule } from './assessment/assessment.module';
+const config = require('./config');
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot(),
+    TypeOrmModule.forRoot(config),
     ArticleModule,
     UserModule,
     ProfileModule,
@@ -23,5 +24,5 @@ import { AssessmentModule } from './assessment/assessment.module';
   providers: []
 })
 export class ApplicationModule {
-  constructor(private readonly connection: Connection) {}
+  //constructor(private readonly connection: Connection) {}
 }
