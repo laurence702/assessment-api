@@ -3,10 +3,11 @@ import { UpdateAssessmentDto } from './../dto/update-assessment.dto';
 import { HttpException } from '@nestjs/common/exceptions/http.exception';
 import { validate } from 'class-validator';
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { getConnection, Repository } from "typeorm";
 import { QuestionEntity } from "../entities/question.entity";
 import { HttpStatus, Body } from '@nestjs/common';
 import { CreateQuestionDto } from '../dto/question.dto';
+import { TagEntity } from '../../tag/tag.entity';
 
 
 
@@ -14,7 +15,7 @@ import { CreateQuestionDto } from '../dto/question.dto';
 export class QuestionService {
   constructor(
     @InjectRepository(QuestionEntity)
-    private readonly questionRepository: Repository<QuestionEntity>,
+    private readonly questionsRepository: Repository<QuestionEntity>
   ) { }
 
   async create(@Body() questionDto: CreateQuestionDto): Promise<any> {
@@ -36,7 +37,7 @@ export class QuestionService {
 
     } else {
       try {
-        const savedUser = await this.questionRepository.save(newQuestion);
+        const savedUser = await this.questionsRepository.save(newQuestion);
         return this.buildQuestionsRO(savedUser);
       } catch (error) {
         `Questions  [${questionDto.question}] cant be created`;
@@ -47,18 +48,23 @@ export class QuestionService {
 
   private buildQuestionsRO(question: QuestionEntity) {
     const questionRO = {
-
+        id: question.id,
+        assessment: question.assessment,
+        category: question.category,
+        explanations: question.explanations,
+        question: question.question,
+        options: question.options
     };
 
-    return { user: questionRO };
+    return { question: questionRO };
   }
 
-  findAll() {
-    return `This action returns all assessment`;
+  async findAll(): Promise<QuestionEntity[]>{
+     return await  this.questionsRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} assessment`;
+  async findOne(id: number) {
+    return await this.questionsRepository.findOne(id);
   }
 
   update(id: number, updateAssessmentDto: UpdateAssessmentDto) {
