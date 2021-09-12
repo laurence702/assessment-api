@@ -18,8 +18,10 @@ export class UserService {
     private readonly userRepository: Repository<UserEntity>
   ) {}
 
-  async findAll(): Promise<UserEntity[]> {
-    return await this.userRepository.find();
+  async findAll(): Promise<any> {
+    return await this.userRepository.find({ 
+      relations: ['assessments']
+    });
   }
 
   async findOne({email, password}: LoginUserDto): Promise<UserEntity> {
