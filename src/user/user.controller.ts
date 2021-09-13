@@ -17,11 +17,18 @@ import {
 export class UserController {
 
   constructor(private readonly userService: UserService) {}
-
+  
   @Get('user')
-  // async findMe(@User('email') email: string): Promise<UserRO> {
-  //   return await this.userService.findByEmail(email);
-  // }
+  async findMe(@User('email') email: string): Promise<UserRO> {
+    return await this.userService.findByEmail(email);
+  }
+  @Get('user:id')
+  async getById(@User('id') id: number): Promise<UserRO>{
+    return await this.userService.findById(id)
+  }
+ 
+  
+  @Get('users')
   async getAllUsers() {
     return await this.userService.findAll();
   }

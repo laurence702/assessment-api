@@ -18,9 +18,9 @@ export class UserService {
     private readonly userRepository: Repository<UserEntity>
   ) {}
 
-  async findAll(): Promise<any> {
+  async findAll(): Promise<UserEntity[]> {
     return await this.userRepository.find({ 
-      relations: ['assessments']
+      relations: ['assessments','assessments.questions']
     });
   }
 

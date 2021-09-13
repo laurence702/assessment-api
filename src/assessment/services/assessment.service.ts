@@ -15,7 +15,7 @@ export class AssessmentService {
   ) { }
   async create(createAssessmentDto: CreateAssessmentDto): Promise<any> {
     try {
-      const newAssessment = await this.assessmentRepository.save({ ...createAssessmentDto[0] });
+      const newAssessment = await this.assessmentRepository.save({ ...createAssessmentDto });
       const errors = await validate(newAssessment);
       const res = (errors.length == 0) ? this.buildAssessmentRO(newAssessment):  new HttpException({ message: 'An error occured', errors }, HttpStatus.BAD_REQUEST);
       return res;
@@ -40,7 +40,9 @@ export class AssessmentService {
 
 
   findAll() {
-    return this.assessmentRepository.find();
+    return this.assessmentRepository.find({
+      relations: ['owner','questions']
+    });
   }
 
   async findOne(id: number) {
