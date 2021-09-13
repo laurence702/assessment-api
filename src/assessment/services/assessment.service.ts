@@ -5,7 +5,7 @@ import { AssessmentEntity } from '../entities/assessment.entity';
 import { Injectable, HttpStatus } from '@nestjs/common';
 import { CreateAssessmentDto } from '../dto/create-assessment.dto';
 import { UpdateAssessmentDto } from '../dto/update-assessment.dto';
-import { Repository } from 'typeorm';
+import { Like, Repository, getRepository, getConnection } from 'typeorm';
 
 @Injectable()
 export class AssessmentService {
@@ -17,11 +17,21 @@ export class AssessmentService {
     try {
       const newAssessment = await this.assessmentRepository.save({ ...createAssessmentDto });
       const errors = await validate(newAssessment);
-      const res = (errors.length == 0) ? this.buildAssessmentRO(newAssessment):  new HttpException({ message: 'An error occured', errors }, HttpStatus.BAD_REQUEST);
+      const res = (errors.length == 0) ?
+        this.buildAssessmentRO(newAssessment) :
+        new HttpException({ message: 'An error occured', errors }, HttpStatus.BAD_REQUEST);
       return res;
     } catch (errors) {
       throw new HttpException({ message: 'An error occured', errors }, HttpStatus.BAD_REQUEST);
     }
+  }
+
+  async getAssessmentByCategory(category: string): Promise<any> {
+    const res =  await getRepository(AssessmentEntity)
+              .createQueryBuilder("assessments")
+              .where("assessments.assesment_type = :category", { category: category })
+              .getMany();
+        return res;
   }
 
   private buildAssessmentRO(assessment: AssessmentEntity) {
@@ -39,14 +49,14 @@ export class AssessmentService {
   }
 
 
-  findAll() {
+  async findAll() {
     return this.assessmentRepository.find({
-      relations: ['owner','questions']
+      relations: ['owner', 'questions']
     });
   }
 
   async findOne(id: number) {
-   return await this.assessmentRepository.findOneOrFail(id);
+    return await this.assessmentRepository.findOneOrFail(id);
   }
 
   async update(id: number, updateAssessmentDto: UpdateAssessmentDto) {
@@ -63,7 +73,7 @@ export class AssessmentService {
 
       return await this.assessmentRepository.remove(assessment)
     } catch (error) {
-      throw new HttpException({ message:'an error occurred while removing assessment', error},HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: 'an error occurred while removing assessment', error }, HttpStatus.BAD_REQUEST)
     }
   }
 }
