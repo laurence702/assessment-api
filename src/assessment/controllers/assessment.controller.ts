@@ -30,6 +30,12 @@ export class AssessmentController {
     return this.assessmentService.findAll();
   }
 
+  @ApiResponse({ status: 200, description: 'Return assessment by categoryId.' })
+  @Get('find/:category')
+  getAssessmentByCategory(@Param('category') category: string,) {
+    return this.assessmentService.getAssessmentByCategory(category);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.assessmentService.findOne(+id);
